@@ -1,4 +1,4 @@
-﻿namespace Infrastructure
+﻿namespace Services
 {
     public class Class1
     {
