@@ -7,6 +7,7 @@ namespace Shared.DTO
         public string DisplayName { get; set; }
         public string Token { get; set; }
         public Guid UserId { get; set; }
+        public int TotalAttempt { get; set; }
     }
 
 }

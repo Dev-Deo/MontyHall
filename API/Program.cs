@@ -45,7 +45,6 @@ try
 {
     await context.Database.MigrateAsync();
     await ApplicationDbContextSeed.SeedUsersAsync(context, userManager);
-    await ApplicationDbContextSeed.SeedAsync(context, loggerFactory, userManager);
 }
 catch (Exception ex)
 {

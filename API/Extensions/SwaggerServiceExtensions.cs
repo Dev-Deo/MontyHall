@@ -9,7 +9,7 @@ namespace API.Extensions
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Pay Roll API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Monty Hall API", Version = "v1" });
 
                 var securitySchema = new OpenApiSecurityScheme
                 {

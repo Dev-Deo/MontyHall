@@ -2,7 +2,7 @@
 {
     public class SD
     {
-        public const string Domain = "@payroll.com";
+        public const string Domain = "@montyhall.com";
         private static string _apiBaseUrl = "https://localhost:7262/api";
 
         public static string FormatUri(string url)
