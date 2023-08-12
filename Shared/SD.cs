@@ -10,10 +10,9 @@
             return string.Format("{0}{1}", _apiBaseUrl, url);
         }
 
+        public static string[] DoorValues = { "C", "G", "G" };
+
         public static string SessionCurrentUser = "CurrentUser";
 
-        public const string Status_Approved = "APP";
-        public const string Status_Pending = "PEN";
-        public const string Status_Rejected = "REJ";
     }
 }

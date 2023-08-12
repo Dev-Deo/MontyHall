@@ -6,7 +6,10 @@ using Domain.Interfaces.Repositories;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Shared;
 using Shared.DTO;
+using Shared.Enums;
+using System;
 
 namespace Services
 {
@@ -92,7 +95,17 @@ namespace Services
         {
             try
             {
-                GameSetup gameSetup = _mapper.Map<GameSetup>(gameSetupCreateDto);
+                string[] gDoors = { "G", "G", "C" };
+
+                GameSetup gameSetup = new GameSetup
+                {
+                    AttemptNo = gameSetupCreateDto.AttemptNo,
+                    UserId = gameSetupCreateDto.UserId,
+                    FirstDoor = getDoor(gDoors, out gDoors),
+                    SecondDoor = getDoor(gDoors, out gDoors),
+                    ThirdDoor = getDoor(gDoors, out gDoors),
+                };
+
                 await _unitOfWork.GameSetup.AddAsync(gameSetup);
                 _unitOfWork.SaveAsync();
 
@@ -111,6 +124,27 @@ namespace Services
                     Message = ex.Message,
                 };
             }
+        }
+
+        private string getDoor(string[] cInDoors, out string[] cOutDoors)
+        {
+            Random random = new Random();
+            int indexToSkip = random.Next(0, cInDoors.Length);
+            string val = cInDoors[indexToSkip];
+            int newArraySize = cInDoors.Length - 1;
+
+            string[] newDoorsArry = new string[newArraySize];
+
+            for (int i = 0, j = 0; i < cInDoors.Length; i++)
+            {
+                if (i != indexToSkip)
+                {
+                    newDoorsArry[j] = cInDoors[i];
+                    j++;
+                }
+            }
+            cOutDoors = newDoorsArry;
+            return val;
         }
 
         public async Task<ResponceDto<GameSetupDto>> GetGameSetupById(int id)
