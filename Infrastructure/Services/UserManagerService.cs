@@ -89,7 +89,6 @@ namespace Services
                     FirstName = s.FirstName,
                     LastName = s.LastName,
                     ContactNo = s.ContactNo,
-                    TotalAttempt = s.TotalAttempt,
                     Id = s.Id,
                 }).ToListAsync();
 
@@ -119,7 +118,6 @@ namespace Services
                     FirstName = s.FirstName,
                     LastName = s.LastName,
                     ContactNo = s.ContactNo,
-                    TotalAttempt = s.TotalAttempt,
                     Id = s.Id,
 
                 }).FirstOrDefaultAsync(u => u.Id == id);

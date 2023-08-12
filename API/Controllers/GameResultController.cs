@@ -32,12 +32,12 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("getGameResultByGameSetupId/{id:int}", Name = "GetGameResultByGameSetupIdAsync")]
+        [HttpGet("getGameResultsByRequestId/{id:int}", Name = "GetGameResultsByRequestIdAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ResponceDto<GameResultDto>>> GetGameResultByGameSetupIdAsync(int id)
+        public async Task<ActionResult<ResponceDto<List<GameResultDto>>>> GetGameResultsByGameRequestIdAsync(int id)
         {
-            var result = await _gameResultService.GetGameResultByGameSetupId(id);
+            var result = await _gameResultService.GetGameResultByGameRequestId(id);
             if (!result.IsSuccess)
             {
                 return BadRequest(result);
@@ -45,12 +45,12 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("getGameResultsByUserId/{id:guid}", Name = "GetGameResultsByUserIdAsync")]
+        [HttpGet("getGameResultBySetupId/{id:guid}", Name = "GetGameResultBySetupIdAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ResponceDto<List<GameResultDto>>>> GetGameResultsByUserIdAsync(Guid id)
+        public async Task<ActionResult<ResponceDto<GameResultDto>>> GetGameResultBySetupIdAsync(int id)
         {
-            var result = await _gameResultService.GetGameResultsByUserId(id);
+            var result = await _gameResultService.GetGameResultsBySetupId(id);
             if (!result.IsSuccess)
             {
                 return BadRequest(result);

@@ -27,7 +27,13 @@ namespace Services
         {
             try
             {
-                GameResult gameResult = _mapper.Map<GameResult>(gameResultCreateDto);
+                var gameSetup = await _unitOfWork.GameSetup.GetFirstOrDefaultAsync(s => s.Id == gameResultCreateDto.GameSetupId);
+                GameResult gameResult = new()
+                {
+                    GameSetupId = gameResultCreateDto.GameSetupId,
+                    FirstChoice = gameResultCreateDto.FirstChoise,
+                    SecondChoice = 0,
+                };
                 await _unitOfWork.GameResult.AddAsync(gameResult);
                 _unitOfWork.SaveAsync();
 
@@ -48,58 +54,12 @@ namespace Services
             }
         }
 
-        public async Task<ResponceDto<GameResultDto>> GetGameResultByGameSetupId(int id)
-        {
-            try
-            {
-                var result = await _unitOfWork.GameResult.GetFirstOrDefaultAsync(a => a.GameSetupId == id,includeProperties: "GameSetup,GameSetup.User");
-                return new ResponceDto<GameResultDto>
-                {
-                    IsSuccess = true,
-                    Data = _mapper.Map<GameResultDto>(result),
-                };
-            }
-            catch (Exception ex)
-            {
-                return new ResponceDto<GameResultDto>()
-                {
-                    Message = ex.Message,
-                    IsSuccess = false
-                }; ;
-            }
-        }
-
-        public async Task<ResponceDto<List<GameResultDto>>> GetGameResultsByUserId(Guid UserId)
-        {
-            try
-            {
-                var gameResults = await _unitOfWork.GameResult.GetAllAsync(a => a.GameSetup.UserId == UserId,
-                                                                           includeProperties: "GameSetup,GameSetup.User");
-                return new ResponceDto<List<GameResultDto>>
-                {
-                    IsSuccess = true,
-                    Data = _mapper.Map<List<GameResultDto>>(gameResults),
-                };
-            }
-            catch (Exception ex)
-            {
-                return new ResponceDto<List<GameResultDto>>()
-                {
-                    Message = ex.Message,
-                    IsSuccess = false
-                }; 
-            }
-        }
-
         public async Task<ResponceDto<GameResultDto>> UpdateGameResult(GameResultUpdateDto gameResultUpdateDto)
         {
             try
             {
                 var gameResult = await _unitOfWork.GameResult.GetAsync(gameResultUpdateDto.Id);
-                gameResult.FirstChoice = gameResultUpdateDto.FirstChoice;
                 gameResult.SecondChoice = gameResultUpdateDto.SecondChoice;
-                gameResult.GameSetupId = gameResultUpdateDto.GameSetupId;
-                gameResult.IsWin = gameResultUpdateDto.IsWin ?? false;
                 _unitOfWork.SaveAsync();
 
                 return new ResponceDto<GameResultDto>()
@@ -119,5 +79,50 @@ namespace Services
                 };
             }
         }
+
+        public async Task<ResponceDto<GameResultDto>> GetGameResultsBySetupId(int setupId)
+        {
+            try
+            {
+                var result = await _unitOfWork.GameResult.GetFirstOrDefaultAsync(a => a.GameSetupId == setupId, 
+                                                        includeProperties: "GameSetup,GameSetup.GameRequest");
+                return new ResponceDto<GameResultDto>
+                {
+                    IsSuccess = true,
+                    Data = _mapper.Map<GameResultDto>(result),
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ResponceDto<GameResultDto>()
+                {
+                    Message = ex.Message,
+                    IsSuccess = false
+                }; ;
+            }
+        }
+
+        public async Task<ResponceDto<List<GameResultDto>>> GetGameResultByGameRequestId(int requestId)
+        {
+            try
+            {
+                var gameResults = await _unitOfWork.GameResult.GetAllAsync(a => a.GameSetup.GameRequestId == requestId,
+                                                                           includeProperties: "GameSetup,GameSetup.GameRequest");
+                return new ResponceDto<List<GameResultDto>>
+                {
+                    IsSuccess = true,
+                    Data = _mapper.Map<List<GameResultDto>>(gameResults),
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ResponceDto<List<GameResultDto>>()
+                {
+                    Message = ex.Message,
+                    IsSuccess = false
+                }; 
+            }
+        }
+
     }
 }

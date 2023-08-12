@@ -13,6 +13,7 @@ namespace Infrastructure.Data
             : base(options) { }
 
         public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
+        public DbSet<GameRequest> GameRequests => Set<GameRequest>();
         public DbSet<GameSetup> GameSetups => Set<GameSetup>();
         public DbSet<GameResult> GameResults => Set<GameResult>();
 

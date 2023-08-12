@@ -17,36 +17,6 @@ namespace API.Controllers
             _gameSetupService = gameSetupService;
         }
 
-        #region USER GAME ATTEMPT
-        [HttpGet("getUserAttemptByUserId/{id:guid}", Name = "GetUserAttemptByUserIdAsync")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ResponceDto<ApplicationUserDto>>> GetUserAttemptByUserIdAsync(Guid id)
-        {
-            var result = await _gameSetupService.GetUserAttemptByUserId(id);
-            if (!result.IsSuccess)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
-        }
-
-
-        [HttpPut("createUserAttempt")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ResponceDto<ApplicationUserDto>>> CreateUserAttemptAsync(UserAttemptCreateDto userAttemptCreateDto)
-        {
-            var result = await _gameSetupService.CreateUserAttempt(userAttemptCreateDto);
-            if (!result.IsSuccess)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
-        }
-        #endregion
-
-        #region GAME SETUP
 
         [HttpPost("createGameSetup")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -74,12 +44,12 @@ namespace API.Controllers
             return Ok(result);
         }      
         
-        [HttpGet("getGameSetupsByUserId/{id:guid}", Name = "GetGameSetupsByUserIdAsync")]
+        [HttpGet("getGameSetupsByRequestId/{id:int}", Name = "GetGameSetupsByRequestIdAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ResponceDto<List<GameSetupDto>>>> GetGameSetupsByUserIdAsync(Guid id)
+        public async Task<ActionResult<ResponceDto<List<GameSetupDto>>>> GetGameSetupsByRequestIdAsync(int id)
         {
-            var result = await _gameSetupService.GetGameSetupsByUserId(id);
+            var result = await _gameSetupService.GetGameSetupsByRequestId(id);
             if (!result.IsSuccess)
             {
                 return BadRequest(result);
@@ -87,6 +57,5 @@ namespace API.Controllers
             return Ok(result);
         }
        
-        #endregion
     }
 }

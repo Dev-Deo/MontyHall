@@ -15,10 +15,11 @@ namespace API.Helpers
                 .ForMember(d => d.LastName, o => o.MapFrom(s => s.LastName))
                 .ForMember(d=> d.ContactNo, o => o.MapFrom(s=> s.ContactNo));
 
-            CreateMap<ApplicationUser, UserAttemptCreateDto>()
-                .ForMember(d => d.TotalAttempt, o => o.MapFrom(s => s.TotalAttempt));
-
             CreateMap<ApplicationUserDto, ApplicationUser>().ReverseMap();
+
+            CreateMap<GameRequestCreateDto, GameRequest>();
+            CreateMap<GameRequestUpdateDto, GameRequestDto>();
+            CreateMap<GameRequest, GameRequestDto>().ReverseMap();
 
             CreateMap<GameSetupCreateDto, GameSetup>();
             CreateMap<GameSetupUpdateDto, GameSetupDto>();

@@ -3,7 +3,7 @@ namespace Shared.DTO
 {
     public class GameSetupCreateDto
     {
-        public Guid UserId { get; set; }
-        public int AttemptNo { get; set; }
+        public int GameRequestId { get; set; }
+        public int GameRequestNo { get; set; }
     }
 }

@@ -15,82 +15,15 @@ namespace Services
 {
     public class GameSetupService : IGameSetupService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GameSetupService(UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork, IMapper mapper)
+        public GameSetupService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _userManager = userManager;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        #region USER GAME ATTEMPT
-        public async Task<ResponceDto<ApplicationUserDto>> CreateUserAttempt(UserAttemptCreateDto userAttemptCreateDto)
-        {
-            try
-            {
-                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userAttemptCreateDto.UserId);
-                user.TotalAttempt = userAttemptCreateDto.TotalAttempt;
-                var result = await _userManager.UpdateAsync(user);
-                return new ResponceDto<ApplicationUserDto>()
-                {
-                    IsSuccess = result.Succeeded,
-                    Message = result.Errors.FirstOrDefault()?.Description,
-                    Data = _mapper.Map<ApplicationUserDto>(user)
-                    //Data = new ApplicationUserDto
-                    //{
-                    //    Id = user.Id,
-                    //    Email = user.Email,
-                    //    FirstName = user.FirstName,
-                    //    LastName = user.LastName,
-                    //    TotalAttempt = user.TotalAttempt
-                    //}
-                };
-            }
-            catch (Exception ex)
-            {
-                return new ResponceDto<ApplicationUserDto>()
-                {
-                    Message = ex.Message,
-                    IsSuccess = false
-                };
-            }
-        }
-
-        public async Task<ResponceDto<ApplicationUserDto>> GetUserAttemptByUserId(Guid id)
-        {
-            try
-            {
-                var user = await _userManager.Users.Select(s => new ApplicationUserDto
-                {
-                    Id = s.Id,
-                    Email = s.Email,
-                    FirstName = s.FirstName,
-                    LastName = s.LastName,
-                    TotalAttempt = s.TotalAttempt
-
-                }).FirstOrDefaultAsync(u => u.Id == id);
-
-                return new ResponceDto<ApplicationUserDto>
-                {
-                    Data = user,
-                    IsSuccess = true
-                };
-            }
-            catch (Exception ex)
-            {
-                return new ResponceDto<ApplicationUserDto>()
-                {
-                    Message = ex.Message,
-                    IsSuccess = false
-                }; ;
-            }
-        }
-        #endregion 
-
-        #region GAME SETUP
         public async Task<ResponceDto<GameSetupDto>> CreateGameSetup(GameSetupCreateDto gameSetupCreateDto)
         {
             try
@@ -99,8 +32,8 @@ namespace Services
 
                 GameSetup gameSetup = new GameSetup
                 {
-                    AttemptNo = gameSetupCreateDto.AttemptNo,
-                    UserId = gameSetupCreateDto.UserId,
+                    GameRequestId = gameSetupCreateDto.GameRequestId,
+                    GameRequestNo = gameSetupCreateDto.GameRequestNo,
                     FirstDoor = getDoor(gDoors, out gDoors),
                     SecondDoor = getDoor(gDoors, out gDoors),
                     ThirdDoor = getDoor(gDoors, out gDoors),
@@ -168,11 +101,11 @@ namespace Services
             }
         }
 
-        public async Task<ResponceDto<List<GameSetupDto>>> GetGameSetupsByUserId(Guid UserId)
+        public async Task<ResponceDto<List<GameSetupDto>>> GetGameSetupsByRequestId(int requestId)
         {
             try
             {
-                var gameSetups = await _unitOfWork.GameSetup.GetAllAsync(a => a.UserId == UserId,includeProperties:"User");
+                var gameSetups = await _unitOfWork.GameSetup.GetAllAsync(a => a.GameRequestId == requestId, includeProperties: "GameRequest");
                 return new ResponceDto<List<GameSetupDto>>
                 {
                     Data = _mapper.Map<List<GameSetupDto>>(gameSetups),
@@ -189,6 +122,6 @@ namespace Services
                 };
             }
         }
-        #endregion
+
     }
 }
