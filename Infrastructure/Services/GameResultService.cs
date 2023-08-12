@@ -52,11 +52,11 @@ namespace Services
         {
             try
             {
-                var gameResult = await _unitOfWork.GameResult.GetFirstOrDefaultAsync(a => a.GameSetupId == id);
+                var result = await _unitOfWork.GameResult.GetFirstOrDefaultAsync(a => a.GameSetupId == id,includeProperties: "GameSetup,GameSetup.User");
                 return new ResponceDto<GameResultDto>
                 {
                     IsSuccess = true,
-                    Data = _mapper.Map<GameResultDto>(gameResult),
+                    Data = _mapper.Map<GameResultDto>(result),
                 };
             }
             catch (Exception ex)
@@ -73,8 +73,8 @@ namespace Services
         {
             try
             {
-                var gameResults = await _unitOfWork.GameResult.GetFirstOrDefaultAsync(a => a.GameSetup.UserId == UserId,
-                                                                                    includeProperties:"GameSetup");
+                var gameResults = await _unitOfWork.GameResult.GetAllAsync(a => a.GameSetup.UserId == UserId,
+                                                                           includeProperties: "GameSetup,GameSetup.User");
                 return new ResponceDto<List<GameResultDto>>
                 {
                     IsSuccess = true,

@@ -18,6 +18,8 @@ namespace API.Helpers
             CreateMap<ApplicationUser, UserAttemptCreateDto>()
                 .ForMember(d => d.TotalAttempt, o => o.MapFrom(s => s.TotalAttempt));
 
+            CreateMap<ApplicationUserDto, ApplicationUser>().ReverseMap();
+
             CreateMap<GameSetupCreateDto, GameSetup>();
             CreateMap<GameSetupUpdateDto, GameSetupDto>();
             CreateMap<GameSetup, GameSetupDto>().ReverseMap();
@@ -25,6 +27,8 @@ namespace API.Helpers
             CreateMap<GameResultCreateDto, GameResult>();
             CreateMap<GameResultUpdateDto, GameResultDto>();
             CreateMap<GameResult, GameResultDto>().ReverseMap();
+
+
         }
     }
 }

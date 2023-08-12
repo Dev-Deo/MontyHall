@@ -1,10 +1,12 @@
 ﻿using Domain.Entities.Identity;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTO;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class UserMangerController : ApiControllerBase
     {
         private readonly IUserManagerService _userMangerService;
@@ -41,7 +43,9 @@ namespace API.Controllers
             }
             return Ok(user);
         }
+
         //create new user
+        [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

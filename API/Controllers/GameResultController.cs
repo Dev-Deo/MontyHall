@@ -1,4 +1,5 @@
 ﻿using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services;
@@ -6,6 +7,7 @@ using Shared.DTO;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class GameResultController : ApiControllerBase
     {
         private readonly IGameResultService _gameResultService;
@@ -15,7 +17,7 @@ namespace API.Controllers
             _gameResultService = gameResultService;
         }
 
-        #region GAME SETUP
+        #region GAME RESULT
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -30,7 +32,7 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id:int}", Name = "GetGameResultByGameSetupIdAsync")]
+        [HttpGet("getGameResultByGameSetupId/{id:int}", Name = "GetGameResultByGameSetupIdAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponceDto<GameResultDto>>> GetGameResultByGameSetupIdAsync(int id)
@@ -41,9 +43,9 @@ namespace API.Controllers
                 return BadRequest(result);
             }
             return Ok(result);
-        }      
-        
-        [HttpGet("{id:guid}", Name = "GetGameResultsByUserIdAsync")]
+        }
+
+        [HttpGet("getGameResultsByUserId/{id:guid}", Name = "GetGameResultsByUserIdAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponceDto<List<GameResultDto>>>> GetGameResultsByUserIdAsync(Guid id)
@@ -56,7 +58,7 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponceDto<GameResultDto>>> UpdateGameResultAsync(GameResultUpdateDto gameResultUpdateDto)

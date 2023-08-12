@@ -1,4 +1,5 @@
 ﻿using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services;
@@ -6,6 +7,7 @@ using Shared.DTO;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class GameSetupController : ApiControllerBase
     {
         private readonly IGameSetupService _gameSetupService;
@@ -16,7 +18,7 @@ namespace API.Controllers
         }
 
         #region USER GAME ATTEMPT
-        [HttpGet("{id:guid}", Name = "GetUserAttemptByUserIdAsync")]
+        [HttpGet("getUserAttemptByUserId/{id:guid}", Name = "GetUserAttemptByUserIdAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponceDto<ApplicationUserDto>>> GetUserAttemptByUserIdAsync(Guid id)
@@ -30,7 +32,7 @@ namespace API.Controllers
         }
 
 
-        [HttpPut]
+        [HttpPut("createUserAttempt")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponceDto<List<ApplicationUserDto>>>> CreateUserAttemptAsync(UserAttemptCreateDto userAttemptCreateDto)
@@ -59,7 +61,7 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id:int}", Name = "GetGameSetupByIdAsync")]
+        [HttpGet("getGameSetupById/{id:int}", Name = "GetGameSetupByIdAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponceDto<GameSetupDto>>> GetGameSetupByIdAsync(int id)
@@ -72,7 +74,7 @@ namespace API.Controllers
             return Ok(result);
         }      
         
-        [HttpGet("{id:guid}", Name = "GetGameSetupsByUserIdAsync")]
+        [HttpGet("getGameSetupsByUserId/{id:guid}", Name = "GetGameSetupsByUserIdAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponceDto<List<GameSetupDto>>>> GetGameSetupsByUserIdAsync(Guid id)

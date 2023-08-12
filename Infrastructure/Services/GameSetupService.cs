@@ -92,14 +92,6 @@ namespace Services
         {
             try
             {
-                //GameSetup gameSetup = new GameSetup
-                //{
-                //    UserId = gameSetupCreateDto.UserId,
-                //    AttemptNo = gameSetupCreateDto.AttemptNo,
-                //    FirstDoor = gameSetupCreateDto.FirstDoor,
-                //    SecondDoor = gameSetupCreateDto.SecondDoor,
-                //    ThirdDoor = gameSetupCreateDto.ThirdDoor,
-                //};
 
                 GameSetup gameSetup = _mapper.Map<GameSetup>(gameSetupCreateDto);
                 await _unitOfWork.GameSetup.AddAsync(gameSetup);
@@ -126,7 +118,7 @@ namespace Services
         {
             try
             {
-                var gameSetup = await _unitOfWork.GameSetup.GetFirstOrDefaultAsync(a => a.Id == id);
+                var gameSetup = await _unitOfWork.GameSetup.GetFirstOrDefaultAsync(a => a.Id == id,includeProperties:"User");
                 return new ResponceDto<GameSetupDto>
                 {
                     IsSuccess = true,
@@ -147,7 +139,7 @@ namespace Services
         {
             try
             {
-                var gameSetups = await _unitOfWork.GameSetup.GetAllAsync(a => a.UserId == UserId);
+                var gameSetups = await _unitOfWork.GameSetup.GetAllAsync(a => a.UserId == UserId,includeProperties:"User");
                 return new ResponceDto<List<GameSetupDto>>
                 {
                     Data = _mapper.Map<List<GameSetupDto>>(gameSetups),
