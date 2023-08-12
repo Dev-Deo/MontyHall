@@ -1,0 +1,62 @@
+.authentication-box {
+  width: 460px;
+  z-index: 2;
+  margin: 0 auto;
+}
+.authentication-box .theme-form {
+  padding-top: 20px;
+}
+.authentication-box .theme-form .form-group .col-form-label {
+  color: #999;
+}
+.authentication-box .theme-form .social .row {
+  justify-content: center;
+}
+.authentication-box .theme-form .btn-block {
+  position: relative;
+}
+.authentication-box .theme-form .btn-block span {
+  transition: 0.5s all;
+}
+.authentication-box .theme-form .btn-block .login-loader {
+  position: absolute;
+  opacity: 0;
+  z-index: auto;
+  margin: auto;
+  top: 0;
+  right: 156px;
+  bottom: 0;
+  content: " ";
+}
+.authentication-box .theme-form .btn-block .login-loader img {
+  width: 40px;
+}
+.authentication-box .theme-form .btn-block.loader .login-loader {
+  opacity: 1;
+}
+.authentication-box .theme-form .btn-block.loader span {
+  padding-right: 50px;
+}
+.authentication-box h3 {
+  color: #2a3142;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.authentication-box h4 {
+  color: #313131;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.authentication-box h6 {
+  color: #777777;
+  letter-spacing: 1px;
+  font-size: 14px;
+}
+.auth-bg {
+  background: url(../../../assets/images/auth-bg-1.jpg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 50px 100px;
+}

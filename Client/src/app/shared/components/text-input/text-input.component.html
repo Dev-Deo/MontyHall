@@ -1,0 +1,12 @@
+<div class="form-group">
+  <label class="col-form-label pt-0">{{label}}</label>
+  <input [type]="type" [formControl]="control" [placeholder]="label" class="form-control"
+    [ngClass]="(control.touched) ? control.invalid ? 'is-invalid' : 'is-valid' : null">
+
+  <div *ngIf="control.touched && control.errors?.['required']" class="text text-danger mt-1">
+    Please enter your {{label}}
+  </div>
+  <div *ngIf="control.touched && control.errors?.['email']" class="text text-danger mt-1">
+    Invalid Email
+  </div>
+</div>

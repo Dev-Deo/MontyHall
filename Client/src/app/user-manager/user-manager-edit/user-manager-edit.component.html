@@ -1,0 +1,40 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>User Manager</h5>
+        </div>
+        <div class="card-body">
+          <form class="theme-form" [formGroup]="applicationUserForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-12">
+                <app-text-input [formControl]="applicationUserForm.controls['firstName']" label="First Name"
+                  type="text"></app-text-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <app-text-input [formControl]="applicationUserForm.controls['lastName']" label="Last Name"
+                  type="text"></app-text-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <app-text-input [formControl]="applicationUserForm.controls['contactNo']" label="Contact No"
+                  type="number"></app-text-input>
+              </div>
+            </div>
+            <div class="row my-2">
+              <div class="col-md-12">
+                <button type="submit" class="btn btn-primary me-1"
+                  [disabled]="!applicationUserForm.valid">Submit</button>
+                <button class="btn btn-secondary" routerLink="/user-manager">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

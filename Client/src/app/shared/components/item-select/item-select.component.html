@@ -1,0 +1,10 @@
+<div style="margin-bottom: 20px;">
+  <label class="col-form-label pt-0">{{label}}</label>
+  <ng-select labelForId="{{ label }}" [formControl]="control" [items]="items" [multiple]="multiple"
+    [closeOnSelect]="false" [bindLabel]="bindLabel" [bindValue]="bindValue" [placeholder]="placeholder" #select>
+  </ng-select>
+
+  <div *ngIf="control.touched && control.errors?.['required']" class="text text-danger mt-1">
+    Please enter your {{label}}
+  </div>
+</div>

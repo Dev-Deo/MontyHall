@@ -1,0 +1,25 @@
+<h6 class="card-title" *ngIf="title !== ''">{{ title }}</h6>
+<div>
+  <div class="row">
+    <div class="col-md-4">
+      <ng-select [items]="rowCounts" [searchable]="false" [(ngModel)]="selectedRowCount" (change)="onRowCountChange()"
+        [clearable]="false" style="margin: 15px 0; width: 55px">
+      </ng-select>
+    </div>
+    <div class="col-md-4">
+      <input class="form-control" type="text" style="padding: 8px; margin: 15px auto; width: 100%"
+        placeholder="Type to filter records..." (keyup)="updateFilter($event)" />
+    </div>
+  </div>
+</div>
+<div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="table-responsive" *ngIf="rows$ | async">
+        <ngx-datatable class="material" [rows]="rows$ | async" [columns]="columns" [columnMode]="ColumnMode.force"
+          [limit]="selectedRowCount" [footerHeight]="50" rowHeight="auto" headerHeight="auto">
+        </ngx-datatable>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="row pb-3">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-header bg-light">
+        <h4>User Manager</h4>
+
+      </div>
+      <div class="card-body">
+        <span class="d-flex justify-content-end align-items-baseline">
+          <button class="btn btn-primary btn-tool" [routerLink]="['/','user-manager','create']">
+            Create User
+          </button>
+        </span>
+        <app-data-table [data]="applicationUserSource" [columns]="columns">
+        </app-data-table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #actionTemplate ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+  <a type="button" class="btn btn-sm btn-primary" style="margin-right: 5px" (click)="onEdit(value,row)">
+    Edit
+  </a>
+
+  <!-- <a type="button" class="btn btn-sm btn-danger" style="margin-right: 5px" (click)="onDelete(value,row.fullName)">
+    Delete
+  </a> -->
+</ng-template>

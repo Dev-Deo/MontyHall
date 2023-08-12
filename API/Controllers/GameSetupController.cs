@@ -35,7 +35,7 @@ namespace API.Controllers
         [HttpPut("createUserAttempt")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ResponceDto<List<ApplicationUserDto>>>> CreateUserAttemptAsync(UserAttemptCreateDto userAttemptCreateDto)
+        public async Task<ActionResult<ResponceDto<ApplicationUserDto>>> CreateUserAttemptAsync(UserAttemptCreateDto userAttemptCreateDto)
         {
             var result = await _gameSetupService.CreateUserAttempt(userAttemptCreateDto);
             if (!result.IsSuccess)
@@ -48,7 +48,7 @@ namespace API.Controllers
 
         #region GAME SETUP
 
-        [HttpPost]
+        [HttpPost("createGameSetup")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponceDto<GameSetupDto>>> CreateGameSetup(GameSetupCreateDto gameSetupCreateDto)

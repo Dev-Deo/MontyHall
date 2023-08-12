@@ -92,7 +92,6 @@ namespace Services
         {
             try
             {
-
                 GameSetup gameSetup = _mapper.Map<GameSetup>(gameSetupCreateDto);
                 await _unitOfWork.GameSetup.AddAsync(gameSetup);
                 _unitOfWork.SaveAsync();
