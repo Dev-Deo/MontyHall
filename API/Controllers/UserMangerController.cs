@@ -18,7 +18,7 @@ namespace API.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ResponceDto<List<ApplicationUser>>>> GetUsersAsync()
+        public async Task<ActionResult<ResponceDto<List<ApplicationUserDto>>>> GetUsersAsync()
         {
             var users = await _userMangerService.GetUsersAsync();
             if (!users.IsSuccess)
@@ -32,7 +32,7 @@ namespace API.Controllers
         [HttpGet("{id:guid}", Name = "GetUserByIdAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ResponceDto<ApplicationUser>>> GetUserByIdAsync(Guid id)
+        public async Task<ActionResult<ResponceDto<ApplicationUserDto>>> GetUserByIdAsync(Guid id)
         {
             var user = await _userMangerService.GetUserByIdAsync(id);
             if (!user.IsSuccess)
@@ -45,7 +45,7 @@ namespace API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ResponceDto<ApplicationUser>>> CreateUser(ApplicationUserCreateDto applicationUserDto)
+        public async Task<ActionResult<ResponceDto<ApplicationUserDto>>> CreateUser(ApplicationUserCreateDto applicationUserDto)
         {
             var result = await _userMangerService.CreateUser(applicationUserDto);
             if (!result.IsSuccess)
@@ -59,7 +59,7 @@ namespace API.Controllers
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ResponceDto<ApplicationUser>>> UpdateUser(ApplicationUserUpdateDto applicationUserUpdateDto)
+        public async Task<ActionResult<ResponceDto<ApplicationUserDto>>> UpdateUser(ApplicationUserUpdateDto applicationUserUpdateDto)
         {
             var result = await _userMangerService.UpdateApplicationUser(applicationUserUpdateDto);
             if (!result.IsSuccess)

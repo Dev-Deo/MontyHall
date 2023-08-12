@@ -7,6 +7,5 @@
         public string LastName { get; set; }
         public string? Email { get; set; }
         public int? ContactNo { get; set; }
-        public int TotalAttempt { get; set; }
     }
 }

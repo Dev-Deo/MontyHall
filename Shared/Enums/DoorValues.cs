@@ -2,7 +2,8 @@
 {
     public enum DoorValues
     {
-        Goat,
         Car,
+        FirstGoat,
+        SecondGoat,
     }
 }
