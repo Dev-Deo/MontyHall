@@ -11,10 +11,15 @@ namespace Infrastructure.Repositories
         {
             _db = db;
             ApplicationUser = new ApplicationUserRepository(_db);
+            GameSetup = new GameSetupRepository(_db);
+            GameResult = new GameResultRepository(_db);
         }
 
         public IApplicationUserRepository ApplicationUser { get; private set; }
 
+        public IGameSetupRepository GameSetup { get; private set; }
+
+        public IGameResultRepository GameResult { get; private set; }
 
         public void Dispose()
         {
@@ -26,19 +31,5 @@ namespace Infrastructure.Repositories
             _db.SaveChangesAsync().GetAwaiter().GetResult();
         }
 
-        //public async Task<IDbContextTransaction> BeginTransactionAsync()
-        //{
-        //    return await _db.Database.BeginTransactionAsync();
-        //}
-
-        //public async void CommitAsync(IDbContextTransaction transaction)
-        //{
-        //    await transaction.CommitAsync();
-        //}
-
-        //public async void RollbackAsync(IDbContextTransaction transaction)
-        //{
-        //    await transaction.RollbackAsync();
-        //}
     }
 }

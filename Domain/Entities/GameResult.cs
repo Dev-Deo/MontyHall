@@ -1,7 +1,6 @@
 ﻿using Domain.Common;
-using Domain.Entities;
 
-namespace Shared.DTO
+namespace Domain.Entities
 {
     public class GameResult:BaseEntity
     {

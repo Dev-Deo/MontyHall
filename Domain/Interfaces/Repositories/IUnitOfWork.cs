@@ -3,9 +3,8 @@
     public interface IUnitOfWork : IDisposable
     {
         IApplicationUserRepository ApplicationUser { get; }
+        IGameSetupRepository GameSetup { get; }
+        IGameResultRepository GameResult { get; }
         void SaveAsync();
-        //Task<IDbContextTransaction> BeginTransactionAsync();
-        //void CommitAsync(IDbContextTransaction transaction);
-        //void RollbackAsync(IDbContextTransaction transaction);
     }
 }

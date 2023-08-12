@@ -32,7 +32,7 @@ namespace API.Extensions
                     "CorsPolicy",
                     policy =>
                     {
-                        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:7134");
+                        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
                     }
                 );
             });

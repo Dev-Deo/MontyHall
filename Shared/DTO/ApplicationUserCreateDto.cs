@@ -9,6 +9,7 @@ namespace Shared.DTO
         public string LastName { get; set; }
         public string Password { get; set; }
         public int? ContactNo { get; set; }
+
     }
 
 }

@@ -25,7 +25,9 @@ namespace Services
                     LastName = applicationUserDto.LastName,
                     Email = applicationUserDto.Email,
                     UserName = applicationUserDto.Email,
+                    ContactNo = applicationUserDto.ContactNo??0,
                     EmailConfirmed = true,
+                   
                 };
 
                 var result = await _userManager.CreateAsync(user, applicationUserDto.Password);
@@ -38,6 +40,7 @@ namespace Services
                         Email = user.Email,
                         FirstName = user.FirstName,
                         LastName = user.LastName,
+                        ContactNo = user.ContactNo,
                         Id = user.Id
                     }
                 };
@@ -85,8 +88,11 @@ namespace Services
                     Email = s.Email,
                     FirstName = s.FirstName,
                     LastName = s.LastName,
+                    ContactNo = s.ContactNo,
+                    TotalAttempt = s.TotalAttempt,
                     Id = s.Id,
                 }).ToListAsync();
+
                 return new ResponceDto<List<ApplicationUserDto>>
                 {
                     Data = users,
@@ -95,7 +101,6 @@ namespace Services
             }
             catch (Exception ex)
             {
-
                 return new ResponceDto<List<ApplicationUserDto>>()
                 {
                     Message = ex.Message,
@@ -113,7 +118,10 @@ namespace Services
                     Email = s.Email,
                     FirstName = s.FirstName,
                     LastName = s.LastName,
+                    ContactNo = s.ContactNo,
+                    TotalAttempt = s.TotalAttempt,
                     Id = s.Id,
+
                 }).FirstOrDefaultAsync(u => u.Id == id);
                 return new ResponceDto<ApplicationUserDto>
                 {
@@ -138,6 +146,8 @@ namespace Services
                 var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == applicationUserUpdateDto.Id);
                 user.FirstName = applicationUserUpdateDto.FirstName;
                 user.LastName = applicationUserUpdateDto.LastName;
+                user.ContactNo = applicationUserUpdateDto.ContactNo??0;
+
                 var result = await _userManager.UpdateAsync(user);
                 return new ResponceDto<ApplicationUserDto>()
                 {
@@ -148,6 +158,7 @@ namespace Services
                         Email = user.Email,
                         FirstName = user.FirstName,
                         LastName = user.LastName,
+                        ContactNo = user.ContactNo,
                         Id = user.Id
                     }
                 };
