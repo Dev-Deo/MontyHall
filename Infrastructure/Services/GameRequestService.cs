@@ -28,13 +28,15 @@ namespace Services
         {
             try
             {
-                var request = await _unitOfWork.GameRequest.GetFirstOrDefaultAsync(u => u.UserId == gameRequestCreateDto.UserId);
-                request.TotalGameRequests = request.TotalGameRequests;
+                var gameRequest = _mapper.Map<GameRequest>(gameRequestCreateDto);
+                await _unitOfWork.GameRequest.AddAsync(gameRequest);
+                _unitOfWork.SaveAsync();
+
                 return new ResponceDto<GameRequestDto>()
                 {
                     IsSuccess = true,
-                    Message = "Successfully Created.",
-                    Data = _mapper.Map<GameRequestDto>(request)
+                    Message = "Game Request Successfully Created.",
+                    Data = _mapper.Map<GameRequestDto>(gameRequest)
                 };
             }
             catch (Exception ex)

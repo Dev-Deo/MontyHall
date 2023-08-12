@@ -21,6 +21,8 @@ namespace API.Extensions
             services.AddScoped<IUserManagerService, UserManagerService>();
             services.AddScoped<ILoggedInUserService, LoggedInUserService>();
             services.AddScoped<IAccountService, AccountService>();
+
+            services.AddScoped<IGameRequestService, GameRequestService>();
             services.AddScoped<IGameSetupService, GameSetupService>();
             services.AddScoped<IGameResultService, GameResultService>();
 

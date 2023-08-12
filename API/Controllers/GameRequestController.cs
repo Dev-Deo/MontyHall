@@ -17,9 +17,7 @@ namespace API.Controllers
             _gameRequestService = gameRequestService;
         }
 
-
-
-        [HttpPut("createGameRequest")]
+        [HttpPost("createGameRequest")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponceDto<GameRequestDto>>> CreateUserAttemptAsync(GameRequestCreateDto gameRequestCreateDto)
