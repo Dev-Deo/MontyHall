@@ -44,7 +44,6 @@ namespace API.Controllers
         }
         #endregion
 
-
         #region GAME SETUP
 
         [HttpPost]
