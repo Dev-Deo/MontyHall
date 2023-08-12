@@ -21,12 +21,12 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponceDto<ApplicationUserDto>>> GetUserAttemptByUserIdAsync(Guid id)
         {
-            var gameAttempt = await _gameSetupService.GetUserAttemptByUserId(id);
-            if (!gameAttempt.IsSuccess)
+            var result = await _gameSetupService.GetUserAttemptByUserId(id);
+            if (!result.IsSuccess)
             {
-                return BadRequest(gameAttempt);
+                return BadRequest(result);
             }
-            return Ok(gameAttempt);
+            return Ok(result);
         }
 
 
@@ -35,12 +35,12 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponceDto<List<ApplicationUserDto>>>> CreateUserAttemptAsync(UserAttemptCreateDto userAttemptCreateDto)
         {
-            var gameAttempt = await _gameSetupService.CreateUserAttempt(userAttemptCreateDto);
-            if (!gameAttempt.IsSuccess)
+            var result = await _gameSetupService.CreateUserAttempt(userAttemptCreateDto);
+            if (!result.IsSuccess)
             {
-                return BadRequest(gameAttempt);
+                return BadRequest(result);
             }
-            return Ok(gameAttempt);
+            return Ok(result);
         }
         #endregion
 
@@ -64,12 +64,12 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponceDto<GameSetupDto>>> GetGameSetupByIdAsync(int id)
         {
-            var gameSetup = await _gameSetupService.GetGameSetupById(id);
-            if (!gameSetup.IsSuccess)
+            var result = await _gameSetupService.GetGameSetupById(id);
+            if (!result.IsSuccess)
             {
-                return BadRequest(gameSetup);
+                return BadRequest(result);
             }
-            return Ok(gameSetup);
+            return Ok(result);
         }      
         
         [HttpGet("{id:guid}", Name = "GetGameSetupsByUserIdAsync")]
@@ -77,12 +77,12 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponceDto<List<GameSetupDto>>>> GetGameSetupsByUserIdAsync(Guid id)
         {
-            var gameSetups = await _gameSetupService.GetGameSetupsByUserId(id);
-            if (!gameSetups.IsSuccess)
+            var result = await _gameSetupService.GetGameSetupsByUserId(id);
+            if (!result.IsSuccess)
             {
-                return BadRequest(gameSetups);
+                return BadRequest(result);
             }
-            return Ok(gameSetups);
+            return Ok(result);
         }
        
         #endregion
