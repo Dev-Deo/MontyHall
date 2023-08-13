@@ -34,7 +34,7 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {}
 
   onProceed(gameCount: HTMLInputElement) {
-    this.attempts = +gameCount.value;
+    this.attempts =+ gameCount.value;
     let currentUser = this.authService.getCurrentUser();
 
     let att: IGameRequestCreate = {
@@ -45,6 +45,7 @@ export class GameComponent implements OnInit {
     this.createGameRequest(att).subscribe({
       next: (res) => {
         this.gameRequestId = res.data.id;
+        console.log(res.data);
         this.goToNextGame();
       },
       error: (err) => {
@@ -71,6 +72,7 @@ export class GameComponent implements OnInit {
     };
     this.createGameSetup(gameSetupCreate).subscribe({
       next: (res) => {
+        console.log(res.data);
         this.gameSetup = res.data;
       },
       error: (err) => {
