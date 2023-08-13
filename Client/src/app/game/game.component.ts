@@ -97,6 +97,7 @@ export class GameComponent implements OnInit {
       next: (res) => {
         this.gameResult = res.data;
         this.selectedDoor = res.data.firstChoice;
+
         switch (this.gameResult.openedDoorNo) {
           case 1:
             this.doorOneImg = 'GOAT.png';
@@ -108,6 +109,7 @@ export class GameComponent implements OnInit {
             this.doorThreeImg = 'GOAT.png';
             break;
         }
+
         console.log(res);
       },
       error: (err) => {
@@ -133,6 +135,7 @@ export class GameComponent implements OnInit {
         this.isWin = this.gameResult?.isWin;
         this.selectedDoor = this.gameResult?.secondChoice;
         console.log(res);
+
         switch (this.gameResult.gameSetup.firstDoor) {
           case 'G':
             this.doorOneImg = 'GOAT.png';
@@ -174,6 +177,33 @@ export class GameComponent implements OnInit {
       next: (res) => {
         this.gameResult = res.data;
         this.isWin = this.gameResult?.isWin;
+
+        switch (this.gameResult.gameSetup.firstDoor) {
+          case 'G':
+            this.doorOneImg = 'GOAT.png';
+            break;
+          case 'C':
+            this.doorOneImg = 'CAR.png';
+            break;
+        }
+
+        switch (this.gameResult.gameSetup.secondDoor) {
+          case 'G':
+            this.doorTwoImg = 'GOAT.png';
+            break;
+          case 'C':
+            this.doorTwoImg = 'CAR.png';
+            break;
+        }
+
+        switch (this.gameResult.gameSetup.thirdDoor) {
+          case 'G':
+            this.doorThreeImg = 'GOAT.png';
+            break;
+          case 'C':
+            this.doorThreeImg = 'CAR.png';
+            break;
+        }
       },
     });
   }
