@@ -17,7 +17,6 @@ namespace API.Controllers
             _gameResultService = gameResultService;
         }
 
-        #region GAME RESULT
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -70,6 +69,6 @@ namespace API.Controllers
             }
             return Ok(result);
         }
-        #endregion
+
     }
 }

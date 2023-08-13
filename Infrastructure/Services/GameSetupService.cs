@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
 using Domain.Entities;
-using Domain.Entities.Identity;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
-using Infrastructure.Repositories;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Infrastructure.Helpers;
 using Shared;
 using Shared.DTO;
-using Shared.Enums;
-using System;
 
 namespace Services
 {
@@ -28,15 +23,14 @@ namespace Services
         {
             try
             {
-                string[] gDoors = { "G", "G", "C" };
-
+                string[] gDoors = SD.DoorValues;
                 GameSetup gameSetup = new GameSetup
                 {
                     GameRequestId = gameSetupCreateDto.GameRequestId,
                     GameRequestNo = gameSetupCreateDto.GameRequestNo,
-                    FirstDoor = getDoor(gDoors, out gDoors),
-                    SecondDoor = getDoor(gDoors, out gDoors),
-                    ThirdDoor = getDoor(gDoors, out gDoors),
+                    FirstDoor = GameSetupHelper.GetDoorValue(gDoors, out gDoors),
+                    SecondDoor = GameSetupHelper.GetDoorValue(gDoors, out gDoors),
+                    ThirdDoor = GameSetupHelper.GetDoorValue(gDoors, out gDoors),
                 };
 
                 await _unitOfWork.GameSetup.AddAsync(gameSetup);
@@ -57,27 +51,6 @@ namespace Services
                     Message = ex.Message,
                 };
             }
-        }
-
-        private string getDoor(string[] cInDoors, out string[] cOutDoors)
-        {
-            Random random = new Random();
-            int indexToSkip = random.Next(0, cInDoors.Length);
-            string val = cInDoors[indexToSkip];
-            int newArraySize = cInDoors.Length - 1;
-
-            string[] newDoorsArry = new string[newArraySize];
-
-            for (int i = 0, j = 0; i < cInDoors.Length; i++)
-            {
-                if (i != indexToSkip)
-                {
-                    newDoorsArry[j] = cInDoors[i];
-                    j++;
-                }
-            }
-            cOutDoors = newDoorsArry;
-            return val;
         }
 
         public async Task<ResponceDto<GameSetupDto>> GetGameSetupById(int id)

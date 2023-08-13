@@ -3,9 +3,8 @@ using Domain.Entities;
 using Domain.Entities.Identity;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
-using Infrastructure.Repositories;
+using Infrastructure.Helpers;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Shared.DTO;
 
 namespace Services
@@ -28,19 +27,31 @@ namespace Services
             try
             {
                 var gameSetup = await _unitOfWork.GameSetup.GetFirstOrDefaultAsync(s => s.Id == gameResultCreateDto.GameSetupId);
-                GameResult gameResult = new()
-                {
-                    GameSetupId = gameResultCreateDto.GameSetupId,
-                    FirstChoice = gameResultCreateDto.FirstChoise,
-                    SecondChoice = 0,
-                };
+                int winningDoorIndex = 0;
+                int doorToOpen = 0;
+                string[] gDoors = { gameSetup.FirstDoor, gameSetup.SecondDoor, gameSetup.ThirdDoor };
+
+                if (gameSetup.FirstDoor == "C") winningDoorIndex = 1;
+                else if (gameSetup.FirstDoor == "C") winningDoorIndex = 2;
+                else winningDoorIndex = 3;
+
+                GameSetupHelper.GetDoorNo(winningDoorIndex, gDoors, out gDoors);//Remove winning door from array
+                GameSetupHelper.GetDoorNo(gameResultCreateDto.FirstChoise, gDoors, out gDoors);//Remove user selected door from array
+                Random random = new Random();
+                doorToOpen = random.Next(0, gDoors.Length);
+
+                GameResult gameResult = new();
+                gameResult.GameSetupId = gameResultCreateDto.GameSetupId;
+                gameResult.FirstChoice = gameResultCreateDto.FirstChoise;
+                gameResult.OpenedDoorNo = doorToOpen;
+                gameResult.SecondChoice = 0;
                 await _unitOfWork.GameResult.AddAsync(gameResult);
                 _unitOfWork.SaveAsync();
 
                 return new ResponceDto<GameResultDto>()
                 {
                     IsSuccess = true,
-                    Message = "Game setup created",
+                    Message = $"I will show you what behind the door no {doorToOpen}, Do you wanna switch the doors?",
                     Data = _mapper.Map<GameResultDto>(gameResult)
                 };
             }
@@ -58,15 +69,38 @@ namespace Services
         {
             try
             {
-                var gameResult = await _unitOfWork.GameResult.GetAsync(gameResultUpdateDto.Id);
+                var gameResult = await _unitOfWork.GameResult.GetFirstOrDefaultAsync(a => a.Id == gameResultUpdateDto.Id, includeProperties: "GameSetup");
                 gameResult.SecondChoice = gameResultUpdateDto.SecondChoice;
+
+                var gameSetup = gameResult.GameSetup;
+                switch (gameResultUpdateDto.SecondChoice)
+                {
+                    case 1:
+                        if (gameSetup.FirstDoor == "C") gameResult.IsWin = true;
+                        else gameResult.IsWin = false;
+                    break;
+                    case 2:
+                        if (gameSetup.SecondDoor == "C") gameResult.IsWin = true;
+                        else gameResult.IsWin = false;
+                        break;
+                    case 3:
+                        if (gameSetup.ThirdDoor == "C") gameResult.IsWin = true;
+                        else gameResult.IsWin = false;
+                        break;
+                    default:
+                        return new ResponceDto<GameResultDto>()
+                        {
+                            IsSuccess = false,
+                            Message = "Invalid Door Selection."
+                        };
+                }
                 _unitOfWork.SaveAsync();
 
                 return new ResponceDto<GameResultDto>()
                 {
                     IsSuccess = true,
                     Data = _mapper.Map<GameResultDto>(gameResult),
-                    Message = "Game Result updated"
+                    Message = $"{}"
                 };
 
             }

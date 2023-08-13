@@ -7,6 +7,7 @@ namespace Shared.DTO
         public int GameSetupId { get; set; }
         public GameSetupDto GameSetup { get; set; }
         public int FirstChoice { get; set; }
+        public int OpenedDoorNo { get; set; }
         public int SecondChoice { get; set; }
         public bool IsWin { get; set; }
     }
