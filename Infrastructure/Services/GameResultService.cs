@@ -28,37 +28,14 @@ namespace Services
             {
                 var gameSetup = await _unitOfWork.GameSetup.GetFirstOrDefaultAsync(s => s.Id == gameResultCreateDto.GameSetupId);
                 string[] gDoors = { gameSetup.FirstDoor, gameSetup.SecondDoor, gameSetup.ThirdDoor };
-                int winningDoorIndex = 0;
-                int doorToOpen = 0;
-                int selectedDoorIndex = gameResultCreateDto.FirstChoise;
+                int winningDoorIndex;
+                int doorToOpen;
 
-                if (gameSetup.FirstDoor == "C") winningDoorIndex = 1;
-                else if (gameSetup.FirstDoor == "C") winningDoorIndex = 2;
-                else winningDoorIndex = 3;
+                if (gameSetup.FirstDoor == "C") winningDoorIndex = 0;
+                else if (gameSetup.FirstDoor == "C") winningDoorIndex = 1;
+                else winningDoorIndex = 2;
 
-                if (selectedDoorIndex == winningDoorIndex)
-                {
-                    //Remove winning door from array
-                    GameSetupHelper.GetDoorNo(winningDoorIndex, gDoors, out gDoors);
-                    Random random = new Random();
-                    doorToOpen = random.Next(0, gDoors.Length);
-                }
-                else
-                {
-                    string tmpSelectedDoor = gDoors[selectedDoorIndex];
-                    string tmpWinningDoor = gDoors[winningDoorIndex];
-
-                    for (int i = 0; i < gDoors.Length; i++)
-                    {
-                        string tmpDoor = gDoors[i];
-                        if (tmpDoor != tmpSelectedDoor && tmpDoor != tmpWinningDoor)
-                        {
-                            doorToOpen = i;
-                            break;
-                        }
-                    }
-                }
-
+                doorToOpen = GameSetupHelper.GetOpenDoorIndex(gDoors, winningDoorIndex, gameResultCreateDto.FirstChoise);
 
                 GameResult gameResult = new();
                 gameResult.GameSetupId = gameResultCreateDto.GameSetupId;
