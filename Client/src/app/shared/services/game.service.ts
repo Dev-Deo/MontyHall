@@ -9,6 +9,7 @@ import { IGameRequest } from '../models/gameRequest';
 import { IGameResultCreate } from '../models/gameResultCreate';
 import { IGameResult } from '../models/gameResult';
 import { IGameResultUpdate } from '../models/gameResultUpdate';
+import { IGameResultSummery } from '../models/gameResultSummery';
 
 @Injectable({
   providedIn: 'root',
@@ -43,6 +44,12 @@ export class GameService {
     return this.http.put<IApiResponse<IGameResult>>(
       this.baseUrl + 'gameResult',
       gameResultUpdate
+    );
+  }
+
+  getGameResultsSummeryByRequestId(requestId : number){
+    return this.http.get<IApiResponse<IGameResultSummery[]>>(
+      this.baseUrl + 'gameResult/getGameResultsSummeryByRequestId/' + requestId
     );
   }
 }

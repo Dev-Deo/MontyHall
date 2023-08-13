@@ -26,12 +26,12 @@ namespace Services
             try
             {
                 var gameSetup = await _unitOfWork.GameSetup.GetFirstOrDefaultAsync(s => s.Id == gameResultCreateDto.GameSetupId);
-                string[] gDoors = { gameSetup.FirstDoor, gameSetup.SecondDoor, gameSetup.ThirdDoor };
+                List<string> gDoors = new() { gameSetup.FirstDoor, gameSetup.SecondDoor, gameSetup.ThirdDoor };
                 int winningDoorIndex = 0;
                 int firstChoiceDoorIndex = gameResultCreateDto.FirstChoice - 1;
                 int gOpenDoorIndex = 0;
 
-                for (int i = 0; i < gDoors.Length; i++)
+                for (int i = 0; i < gDoors.Count; i++)
                 {
                     if (gDoors[i] == "C")
                     {
@@ -42,25 +42,27 @@ namespace Services
 
                 if (firstChoiceDoorIndex == winningDoorIndex)
                 {
-                    int newSize = gDoors.Length - 1;
+                    int newSize = gDoors.Count - 1;
 
-                    string[] newArray = new string[newSize];
+                    int[] newArray = new int[newSize];
 
-                    for (int i = 0, j = 0; i < gDoors.Length; i++)
+                    for (int i = 0, j = 0; i < gDoors.Count; i++)
                     {
                         if (i != winningDoorIndex)
                         {
-                            newArray[j] = gDoors[i];
+                            newArray[j] = i;
                             j++;
                         }
                     }
                     Random random = new Random();
-                    gOpenDoorIndex = random.Next(0, newArray.Length)-1;
+
+                    int a = random.Next(0, newArray.Length);
+                    gOpenDoorIndex = newArray[a];
                    
                 }
                 else
                 {
-                    for (int i = 0; i < gDoors.Length; i++)
+                    for (int i = 0; i < gDoors.Count; i++)
                     {
                         if (i != firstChoiceDoorIndex && i != winningDoorIndex)
                         {

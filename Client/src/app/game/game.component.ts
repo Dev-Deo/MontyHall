@@ -7,6 +7,8 @@ import { IGameSetup } from '../shared/models/gameSetup';
 import { IGameResultCreate } from '../shared/models/gameResultCreate';
 import { IGameResult } from '../shared/models/gameResult';
 import { IGameResultUpdate } from '../shared/models/gameResultUpdate';
+import { BehaviorSubject } from 'rxjs';
+import { IGameResultSummery } from '../shared/models/gameResultSummery';
 
 @Component({
   selector: 'app-game',
@@ -25,13 +27,27 @@ export class GameComponent implements OnInit {
   gameSetupId: number = 0;
   selectedDoor: number = 0;
   isWin: boolean | undefined;
+  isViewSummery: boolean = false;
+
+  gameResultSummerySource = new BehaviorSubject<IGameResultSummery[]>(null);
+  columns = [];
 
   constructor(
     private authService: AuthService,
     private gameService: GameService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.columns = [
+      { name: 'First Door', prop: 'firstDoor', sortable: true },
+      { name: 'Second Door', prop: 'secondDoor', sortable: true },
+      { name: 'Third Door', prop: 'thirdDoor', sortable: true },
+      { name: 'First Choice', prop: 'firstChoice', sortable: true },
+      { name: 'Opened Door No', prop: 'openedDoorNo', sortable: true },
+      { name: 'Second Choice', prop: 'secondChoice', sortable: true },
+      { name: 'Status', prop: 'winStatus', sortable: true },
+    ];
+  }
 
   onProceed(gameCount: HTMLInputElement) {
     this.attempts = +gameCount.value;
@@ -66,6 +82,7 @@ export class GameComponent implements OnInit {
     this.gameSetupId = 0;
     this.selectedDoor = 0;
     this.isWin = undefined;
+    this.gameResultSummerySource.next(null);
   }
 
   goToNextGame() {
@@ -170,6 +187,15 @@ export class GameComponent implements OnInit {
             this.doorThreeImg = 'CAR.png';
             break;
         }
+
+        this.getGameResultsSummeryByRequestId().subscribe({
+          next: (res) => {
+            this.gameResultSummerySource.next(res.data);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+        });
       },
     });
   }
@@ -178,7 +204,7 @@ export class GameComponent implements OnInit {
     let gameResultUpdate: IGameResultUpdate = {
       gameSetupId: this.gameSetup?.id,
       id: this.gameResult?.id,
-      isSwitch: true,
+      isSwitch: false,
     };
 
     this.updateGameResult(gameResultUpdate).subscribe({
@@ -218,5 +244,15 @@ export class GameComponent implements OnInit {
 
   updateGameResult(gameResult: IGameResultUpdate) {
     return this.gameService.updateGameResult(gameResult);
+  }
+
+  getGameResultsSummeryByRequestId() {
+    return this.gameService.getGameResultsSummeryByRequestId(
+      this.gameRequestId
+    );
+  }
+
+  onFilter(filter: string) {
+    //let data = this.gameResultSummerySource.getValue();
   }
 }

@@ -26,7 +26,7 @@
   <!-- GAME PALY CARD -->
   <div class="card" style="background-color: white;" *ngIf="gameSetup && isWin == undefined">
     <div class="card-header">
-      <h4>Game</h4>
+      <h4>Game {{attemptNo}}</h4>
     </div>
     <div class="card-body">
       <div class="row">
@@ -51,11 +51,17 @@
 
 
   <!-- GAME RESULT CARD -->
-  <div class="card" style="background-color: white;" *ngIf="gameSetup && isWin != undefined">
+  <div class="card" style="background-color: white;" *ngIf="gameSetup && isWin != undefined && !isViewSummery">
     <div class="card-header">
-      <h4>Game</h4>
+      <h4>Game {{attemptNo}}</h4>
+        <div class="row">
+          <div class="col-md-12">
+            <button class="btn btn-primary" (click)="isViewSummery = !isViewSummery">View Summery</button>
+          </div>
+        </div>
     </div>
     <div class="card-body">
+
       <div class="row">
         <div class="col-md-4 ali" [ngClass]="{'setBorderSelected': selectedDoor == 1}">
           <img [src]="'../../assets/images/'+ doorOneImg">
@@ -78,6 +84,21 @@
       <div class="col-12">
         <button class="btn btn-success btn-lg" style="width: 100%;" (click)="goToNextGame()">Next Round</button>
       </div>
+    </div>
+  </div>
+
+  <div class="card" style="background-color: white;" *ngIf="gameSetup && isWin != undefined && isViewSummery">
+    <div class="card-header">
+      <h4>Game Summery</h4>
+      <div class="row">
+        <div class="col-md-12">
+          <button class="btn btn-primary" (click)="isViewSummery = !isViewSummery">Play</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <app-data-table [data]="gameResultSummerySource" [columns]="columns" (filter)="onFilter($event)">
+      </app-data-table>
     </div>
   </div>
 
