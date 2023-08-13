@@ -1,22 +1,23 @@
 using AutoMapper;
-using Domain.Interfaces.Repositories;
-using System.ComponentModel.Design;
-using Moq;
 using Domain.Interfaces;
+using Domain.Interfaces.Repositories;
+using Moq;
 using Services;
+using Shared.DTO;
 
-namespace API.Test.Services
+namespace API.Tests.Services
 {
-    public class GameRequestServiceTest
+    public class GameRequestServiceTests
     {
         private readonly Mock<IUnitOfWork> _unitOfWork;
         private readonly Mock<IMapper> _mapper;
 
-        public GameRequestServiceTest()
+        public GameRequestServiceTests()
         {
             _unitOfWork = new Mock<IUnitOfWork>();
             _mapper = new Mock<IMapper>();
         }
+
 
         [Fact]
         public async void CreateGameRequest_ShouldCreateGameRequest()
@@ -25,17 +26,23 @@ namespace API.Test.Services
             Guid userId = new Guid();
             GameRequestCreateDto gameRequestCreateDto = new()
             {
-                userId = userId,
-                
+                UserId = userId,
+                TotalGameRequests = 2
+            };
+            GameRequestDto gameRequestDto = new()
+            {
+                Id = 1,
+                UserId = userId,
+                TotalGameRequests = 2
             };
             IGameRequestService gameRequestService = new GameRequestService(_unitOfWork.Object, _mapper.Object);
-
+            
             // act
-            var result = allowanceService.GetAllowancesFromFileImport(viewModel);
+            var outPut = gameRequestService.CreateGameRequest(gameRequestCreateDto);
 
             // assert
-            Assert.NotNull(result);
-            Assert.Equal(4, result.Count());
+            Assert.NotNull(outPut);
+            Assert.Equal(gameRequestDto, outPut.Result.Data);
         }
     }
 }
