@@ -1,47 +1,94 @@
 using AutoMapper;
+using Domain.Entities;
+using Domain.Entities.Identity;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using Moq;
 using Services;
+using Shared;
 using Shared.DTO;
 
 namespace API.Tests.Services
 {
     public class GameRequestServiceTests
     {
-        private readonly Mock<IUnitOfWork> _unitOfWork;
-        private readonly Mock<IMapper> _mapper;
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        private readonly Mock<IMapper> _mapperMock;
+        //private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
 
         public GameRequestServiceTests()
         {
-            _unitOfWork = new Mock<IUnitOfWork>();
-            _mapper = new Mock<IMapper>();
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _mapperMock = new Mock<IMapper>();
+
+            //var userManagerMock = new Mock<UserManager<ApplicationUser>>(
+            //new Mock<IUserStore<ApplicationUser>>().Object,
+            //new Mock<IOptions<IdentityOptions>>().Object,
+            //new Mock<IPasswordHasher<ApplicationUser>>().Object,
+            //new IUserValidator<ApplicationUser>[0],
+            //new IPasswordValidator<ApplicationUser>[0],
+            //new Mock<ILookupNormalizer>().Object,
+            //new Mock<IdentityErrorDescriber>().Object,
+            //new Mock<IServiceProvider>().Object,
+            //new Mock<ILogger<UserManager<ApplicationUser>>>().Object);
+
+            //userManagerMock
+            //    .Setup(userManager => userManager.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+            //    .Returns(Task.FromResult(IdentityResult.Success));
+            //userManagerMock
+            //    .Setup(userManager => userManager.AddToRoleAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()));
         }
 
 
         [Fact]
-        public async void CreateGameRequest_ShouldCreateGameRequest()
+        public void CreateGameRequest_ShouldReturnGameRequestDto()
         {
             // arrange
-            Guid userId = new Guid();
+            var user = new ApplicationUser
+            {
+                Id = new Guid(),
+                Email = "admin" + SD.Domain,
+                UserName = "admin" + SD.Domain,
+                FirstName = "System",
+                LastName = "Admin",
+                EmailConfirmed = true,
+            };
+
             GameRequestCreateDto gameRequestCreateDto = new()
             {
-                UserId = userId,
+                UserId = user.Id,
                 TotalGameRequests = 2
             };
-            GameRequestDto gameRequestDto = new()
+
+            var gameRequest = new GameRequest
             {
-                Id = 1,
-                UserId = userId,
-                TotalGameRequests = 2
+                TotalGameRequests = gameRequestCreateDto.TotalGameRequests,
+                UserId = gameRequestCreateDto.UserId,
             };
-            IGameRequestService gameRequestService = new GameRequestService(_unitOfWork.Object, _mapper.Object);
-            
+
+            var gameRequestSave = gameRequest;
+            gameRequestSave.Id = 1;
+
+            var gameRequestDto = new GameRequestDto
+            {
+                Id = gameRequestSave.Id,
+                UserId = gameRequestSave.UserId,
+                TotalGameRequests = gameRequestSave.TotalGameRequests
+            };
+
+            IGameRequestService gameRequestService = new GameRequestService(_unitOfWorkMock.Object, _mapperMock.Object);
+            _mapperMock.Setup(m => m.Map<GameRequest>(gameRequestCreateDto)).Returns(gameRequest);
+            _mapperMock.Setup(m => m.Map<GameRequestDto>(gameRequestSave)).Returns(gameRequestDto);
+
+            _unitOfWorkMock.Setup(s => s.GameRequest.AddAsync(gameRequest));
+            _unitOfWorkMock.Setup(s => s.SaveAsync());
+
             // act
             var outPut = gameRequestService.CreateGameRequest(gameRequestCreateDto);
 
             // assert
             Assert.NotNull(outPut);
+            Assert.True(outPut.Result.IsSuccess);
             Assert.Equal(gameRequestDto, outPut.Result.Data);
         }
     }

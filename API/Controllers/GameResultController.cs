@@ -44,6 +44,19 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("getGameResultsSummeryByRequestId/{id:int}", Name = "GetGameResultsSummeryByGameRequestIdAsync")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<ResponceDto<List<GameResultSummeryDto>>>> GetGameResultsSummeryByGameRequestIdAsync(int id)
+        {
+            var result = await _gameResultService.GetGameResultSummeryByGameRequestId(id);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
         [HttpGet("getGameResultBySetupId/{id:guid}", Name = "GetGameResultBySetupIdAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

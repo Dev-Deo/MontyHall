@@ -8,5 +8,6 @@ namespace Domain.Interfaces
         Task<ResponceDto<GameResultDto>> UpdateGameResult(GameResultUpdateDto gameResultUpdateDto);
         Task<ResponceDto<GameResultDto>> GetGameResultsBySetupId(int setupId);
         Task<ResponceDto<List<GameResultDto>>> GetGameResultByGameRequestId(int requestId);
+        Task<ResponceDto<List<GameResultSummeryDto>>> GetGameResultSummeryByGameRequestId(int requestId);
     }
 }

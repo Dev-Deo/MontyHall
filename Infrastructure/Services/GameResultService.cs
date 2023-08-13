@@ -11,13 +11,11 @@ namespace Services
 {
     public class GameResultService : IGameResultService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GameResultService(UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork, IMapper mapper)
+        public GameResultService( IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _userManager = userManager;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -40,7 +38,7 @@ namespace Services
                     }
                 }
 
-                doorToOpen = GameSetupHelper.GetOpenDoorIndex(gDoors, winningDoorIndex, gameResultCreateDto.FirstChoise - 1);
+                doorToOpen = GameSetupHelper.GetOpenDoorIndex(gDoors, winningDoorIndex, gameResultCreateDto.FirstChoice - 1);
 
                 if (winningDoorIndex < 0 || doorToOpen < 0)
                 {
@@ -53,7 +51,7 @@ namespace Services
 
                 GameResult gameResult = new();
                 gameResult.GameSetupId = gameResultCreateDto.GameSetupId;
-                gameResult.FirstChoice = gameResultCreateDto.FirstChoise;
+                gameResult.FirstChoice = gameResultCreateDto.FirstChoice;
                 gameResult.OpenedDoorNo = doorToOpen;
                 gameResult.SecondChoice = 0;
                 await _unitOfWork.GameResult.AddAsync(gameResult);
@@ -173,5 +171,39 @@ namespace Services
             }
         }
 
+
+        public async Task<ResponceDto<List<GameResultSummeryDto>>> GetGameResultSummeryByGameRequestId(int requestId)
+        {
+            try
+            {
+                var gameResults = await _unitOfWork.GameResult.GetAllAsync(a => a.GameSetup.GameRequestId == requestId,
+                                                                           includeProperties: "GameSetup,GameSetup.GameRequest");
+                var gameResultSummeryDtos = gameResults.Select(s => new GameResultSummeryDto
+                {
+                    GameSetupId = s.GameSetupId,
+                    FirstDoor = s.GameSetup.FirstDoor == "C" ? "Car" : "Goat",
+                    SecondDoor = s.GameSetup.SecondDoor == "C" ? "Car" : "Goat",
+                    ThirdDoor = s.GameSetup.ThirdDoor == "C" ? "Car" : "Goat",
+                    FirstChoice = $"{s.FirstChoice} Door",
+                    OpenedDoorNo = $"{s.OpenedDoorNo} Door",
+                    SecondChoice = $"{s.SecondChoice} Door",
+                    WinStatus = s.IsWin == true ? "You Won" : "You Lost",
+                });
+
+                return new ResponceDto<List<GameResultSummeryDto>>
+                {
+                    IsSuccess = true,
+                    Data = gameResultSummeryDtos.ToList(),
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ResponceDto<List<GameResultSummeryDto>>()
+                {
+                    Message = ex.Message,
+                    IsSuccess = false
+                };
+            }
+        }
     }
 }
