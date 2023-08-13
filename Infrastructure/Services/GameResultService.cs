@@ -27,18 +27,42 @@ namespace Services
             try
             {
                 var gameSetup = await _unitOfWork.GameSetup.GetFirstOrDefaultAsync(s => s.Id == gameResultCreateDto.GameSetupId);
+                string[] gDoors = { gameSetup.FirstDoor, gameSetup.SecondDoor, gameSetup.ThirdDoor };
                 int winningDoorIndex = 0;
                 int doorToOpen = 0;
-                string[] gDoors = { gameSetup.FirstDoor, gameSetup.SecondDoor, gameSetup.ThirdDoor };
+                int selectedDoor = gameResultCreateDto.FirstChoise;
 
                 if (gameSetup.FirstDoor == "C") winningDoorIndex = 1;
                 else if (gameSetup.FirstDoor == "C") winningDoorIndex = 2;
                 else winningDoorIndex = 3;
 
-                GameSetupHelper.GetDoorNo(winningDoorIndex, gDoors, out gDoors);//Remove winning door from array
-                GameSetupHelper.GetDoorNo(gameResultCreateDto.FirstChoise, gDoors, out gDoors);//Remove user selected door from array
-                Random random = new Random();
-                doorToOpen = random.Next(0, gDoors.Length);
+                if (selectedDoor == winningDoorIndex)
+                {
+                    //Remove winning door from array
+                    GameSetupHelper.GetDoorNo(winningDoorIndex, gDoors, out gDoors);
+                    Random random = new Random();
+                    doorToOpen = random.Next(0, gDoors.Length);
+                }
+                else
+                {
+                    //for (int i = 0; i < gDoors.Length; i++)
+                    //{
+                    //    int tmpDoor = gDoors[i].ToUpper();
+                    //    if (tmpDoor != selectedDoor && tmpDoor != gWinnigDoor.ToUpper())
+                    //    {
+                    //        gOpenedDoor = tmpDoor;
+                    //        Console.WriteLine("Opened door: " + gOpenedDoor);
+                    //        break;
+                    //    }
+                    //}
+                }
+
+
+
+                //Remove user selected door from array
+                GameSetupHelper.GetDoorNo(gameResultCreateDto.FirstChoise, gDoors, out gDoors);
+
+
 
                 GameResult gameResult = new();
                 gameResult.GameSetupId = gameResultCreateDto.GameSetupId;
@@ -96,11 +120,15 @@ namespace Services
                 }
                 _unitOfWork.SaveAsync();
 
+                string tmpMessage = string.Empty;
+                if (gameResult.IsWin)tmpMessage = "Congratulations..! You win the car.";
+                else tmpMessage = "You loose this time."; 
+
                 return new ResponceDto<GameResultDto>()
                 {
                     IsSuccess = true,
                     Data = _mapper.Map<GameResultDto>(gameResult),
-                    Message = $"{}"
+                    Message = tmpMessage
                 };
 
             }

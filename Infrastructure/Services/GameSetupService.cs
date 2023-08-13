@@ -39,7 +39,7 @@ namespace Services
                 return new ResponceDto<GameSetupDto>()
                 {
                     IsSuccess = true,
-                    Message = "Game setup created",
+                    Message = "Let strat the game. Make your first choise.",
                     Data = _mapper.Map<GameSetupDto>(gameSetup)
                 };
             }
