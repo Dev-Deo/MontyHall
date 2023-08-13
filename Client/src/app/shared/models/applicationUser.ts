@@ -5,5 +5,4 @@ export interface IApplicationUser {
   firstName: string;
   lastName: string;
   contactNo: number;
-  totalAttempt: number;
 }

@@ -3,5 +3,4 @@ export interface ICurrentUser {
   displayName: string;
   token: string;
   userId: string;
-  totalAttempt: number;
 }

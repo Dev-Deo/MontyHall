@@ -1,0 +1,73 @@
+<div class="card" style="background-color: white;" *ngIf="attempts <= 0">
+  <div class="card-header">
+    Game
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-12"> <label>Home many times do you want to play</label>
+        <input type="text" class="form-control" id="game" name="game" placeholder="Attempts" #gameCount>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-12 ">
+        <button class="btn btn-primary" (click)="onProceed(gameCount)">Proceed</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card" style="background-color: white;" *ngIf="gameSetup && isWin == undefined">
+  <div class="card-header">
+    Game
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-4 ali" [ngClass]="{'setBorderSelected': selectedDoor == 1}">
+        <img [src]="'../../assets/images/'+ doorOneImg" alt="Rock" (click)="onDoorSelect(1)">
+      </div>
+      <div class="col-md-4" [ngClass]="{'setBorderSelected': selectedDoor == 2}">
+        <img [src]="'../../assets/images/'+ doorTwoImg" alt="Rock" (click)="onDoorSelect(2)">
+      </div>
+      <div class="col-md-4" [ngClass]="{'setBorderSelected': selectedDoor == 3}">
+        <img [src]="'../../assets/images/'+ doorThreeImg" alt="Rock" (click)="onDoorSelect(3)">
+      </div>
+    </div>
+    <div class="row mt-2" *ngIf="selectedDoor > 0">
+      <div class="col-md-3 offset-md-3">
+        <button class="btn btn-primary" (click)="onSwitch()">Switch</button>
+      </div>
+      <div class="col-md-6 ">
+        <button class="btn btn-secondary" (click)="onStay()">Stay</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="background-color: white;" *ngIf="gameSetup && isWin != undefined">
+  <div class="card-header">
+    Game
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-4 ali" [ngClass]="{'setBorderSelected': selectedDoor == 1}">
+        <img [src]="'../../assets/images/'+ doorOneImg" alt="Rock">
+      </div>
+      <div class="col-md-4" [ngClass]="{'setBorderSelected': selectedDoor == 2}">
+        <img [src]="'../../assets/images/'+ doorTwoImg" alt="Rock">
+      </div>
+      <div class="col-md-4" [ngClass]="{'setBorderSelected': selectedDoor == 3}">
+        <img [src]="'../../assets/images/'+ doorThreeImg" alt="Rock">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h3 *ngIf="isWin" style="color: green;">You Win</h3>
+        <h3 *ngIf="!isWin" style="color: red;">You Lose</h3>
+      </div>
+    </div>
+    <div class="row mt-2" *ngIf="attempts - attemptNo > 0">
+      <div class="col-md-5 offset-md-2">
+        <button class="btn btn-primary" style="width: 100%;" (click)="goToNextGame()">Next Round</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -29,7 +29,6 @@ export class UserManagerComponent implements OnInit {
       { name: 'First Name', prop: 'firstName', sortable: true },
       { name: 'Last Name', prop: 'lastName', sortable: true },
       { name: 'Contact No', prop: 'contactNo', sortable: true },
-      { name: 'Total Attempt', prop: 'Total Attempt', sortable: true },
       {
         name: 'Action',
         prop: 'id',

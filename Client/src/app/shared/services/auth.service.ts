@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ICurrentUser } from '../models/currentUser';
 import { IApiResponse } from '../models/apiResponse';
 
@@ -48,28 +48,6 @@ export class AuthService {
     localStorage.removeItem('currentUser');
     this.currentUserSource.next(null);
     this.router.navigate(['/auth/login']);
-  }
-
-  refreshToken() {
-    let token = localStorage.getItem('token');
-    let refreshToken = localStorage.getItem('refreshToken');
-
-    return this.http
-      .post<IApiResponse<ICurrentUser>>(
-        this.baseUrl + 'account/refresh-token',
-        {
-          token: token,
-          refreshToken: refreshToken,
-        }
-      )
-      .pipe(
-        tap((user) => {
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.storeTokens(user.data.token);
-
-          this.currentUserSource.next(user.data);
-        })
-      );
   }
 
   getCurrentUser() {

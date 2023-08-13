@@ -38,6 +38,11 @@ const routes: Routes = [
             (m) => m.UserManagerModule
           ),
       },
+      {
+        path: 'game',
+        loadChildren: () =>
+          import('./game/game.module').then((m) => m.GameModule),
+      },
     ],
   },
 
