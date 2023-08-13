@@ -1,15 +1,8 @@
 ﻿using AutoMapper;
 using Domain.Entities;
-using Domain.Entities.Identity;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
-using Infrastructure.Repositories;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Shared;
 using Shared.DTO;
-using Shared.Enums;
-using System;
 
 namespace Services
 {

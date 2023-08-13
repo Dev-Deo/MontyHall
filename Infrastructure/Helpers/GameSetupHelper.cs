@@ -35,13 +35,10 @@
             }
             else
             {
-                string tmpSelectedDoor = gDoors[selectedDoorIndex];
-                string tmpWinningDoor = gDoors[winningDoorIndex];
-
                 for (int i = 0; i < gDoors.Length; i++)
                 {
                     string tmpDoor = gDoors[i];
-                    if (tmpDoor != tmpSelectedDoor && tmpDoor != tmpWinningDoor)
+                    if (i != selectedDoorIndex && i != winningDoorIndex)
                     {
                         tmpDoorToOpen = i;
                         break;
