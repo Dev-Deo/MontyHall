@@ -49,7 +49,7 @@
                 }
             }
 
-            return tmpDoorToOpen;
+            return tmpDoorToOpen + 1;
         }
 
 

@@ -28,14 +28,28 @@ namespace Services
             {
                 var gameSetup = await _unitOfWork.GameSetup.GetFirstOrDefaultAsync(s => s.Id == gameResultCreateDto.GameSetupId);
                 string[] gDoors = { gameSetup.FirstDoor, gameSetup.SecondDoor, gameSetup.ThirdDoor };
-                int winningDoorIndex;
-                int doorToOpen;
+                int winningDoorIndex = -1;
+                int doorToOpen = -1;
 
-                if (gameSetup.FirstDoor == "C") winningDoorIndex = 0;
-                else if (gameSetup.FirstDoor == "C") winningDoorIndex = 1;
-                else winningDoorIndex = 2;
+                for (int i = 0; i < gDoors.Length; i++)
+                {
+                    if (gDoors[i] == "C")
+                    {
+                        winningDoorIndex = i;
+                        break;
+                    }
+                }
 
-                doorToOpen = GameSetupHelper.GetOpenDoorIndex(gDoors, winningDoorIndex, gameResultCreateDto.FirstChoise);
+                doorToOpen = GameSetupHelper.GetOpenDoorIndex(gDoors, winningDoorIndex, gameResultCreateDto.FirstChoise - 1);
+
+                if (winningDoorIndex < 0 || doorToOpen < 0)
+                {
+                    return new ResponceDto<GameResultDto>()
+                    {
+                        IsSuccess = false,
+                        Message = "Failed to find winning door or door to open not found",
+                    };
+                }
 
                 GameResult gameResult = new();
                 gameResult.GameSetupId = gameResultCreateDto.GameSetupId;
