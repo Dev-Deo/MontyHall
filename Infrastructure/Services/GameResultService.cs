@@ -74,58 +74,6 @@ namespace Services
             }
         }
 
-        public async Task<ResponceDto<GameResultDto>> UpdateGameResult(GameResultUpdateDto gameResultUpdateDto)
-        {
-            try
-            {
-                var gameResult = await _unitOfWork.GameResult.GetFirstOrDefaultAsync(a => a.Id == gameResultUpdateDto.Id, includeProperties: "GameSetup");
-                gameResult.SecondChoice = gameResultUpdateDto.SecondChoice;
-
-                var gameSetup = gameResult.GameSetup;
-                switch (gameResultUpdateDto.SecondChoice)
-                {
-                    case 1:
-                        if (gameSetup.FirstDoor == "C") gameResult.IsWin = true;
-                        else gameResult.IsWin = false;
-                    break;
-                    case 2:
-                        if (gameSetup.SecondDoor == "C") gameResult.IsWin = true;
-                        else gameResult.IsWin = false;
-                        break;
-                    case 3:
-                        if (gameSetup.ThirdDoor == "C") gameResult.IsWin = true;
-                        else gameResult.IsWin = false;
-                        break;
-                    default:
-                        return new ResponceDto<GameResultDto>()
-                        {
-                            IsSuccess = false,
-                            Message = "Invalid Door Selection."
-                        };
-                }
-                _unitOfWork.SaveAsync();
-
-                string tmpMessage = string.Empty;
-                if (gameResult.IsWin)tmpMessage = "Congratulations..! You win the car.";
-                else tmpMessage = "You loose this time."; 
-
-                return new ResponceDto<GameResultDto>()
-                {
-                    IsSuccess = true,
-                    Data = _mapper.Map<GameResultDto>(gameResult),
-                    Message = tmpMessage
-                };
-
-            }
-            catch (Exception ex)
-            {
-                return new ResponceDto<GameResultDto>()
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
-        }
 
         public async Task<ResponceDto<GameResultDto>> GetGameResultsBySetupId(int setupId)
         {
@@ -171,7 +119,6 @@ namespace Services
             }
         }
 
-
         public async Task<ResponceDto<List<GameResultSummeryDto>>> GetGameResultSummeryByGameRequestId(int requestId)
         {
             try
@@ -202,6 +149,78 @@ namespace Services
                 {
                     Message = ex.Message,
                     IsSuccess = false
+                };
+            }
+        }
+
+        public async Task<ResponceDto<GameResultDto>> UpdateGameResult(GameResultUpdateDto gameResultUpdateDto)
+        {
+            try
+            {
+                var gameResult = await _unitOfWork.GameResult.GetFirstOrDefaultAsync(a => a.Id == gameResultUpdateDto.Id, includeProperties: "GameSetup");
+                string[] gDoors = { gameResult.GameSetup.FirstDoor, gameResult.GameSetup.SecondDoor, gameResult.GameSetup.ThirdDoor };
+
+                int winningDoorIndex = 0;
+                int selectedDoorIndex = 0;
+                int finalDoorIndex = 0;
+
+                for (int i = 0; i < gDoors.Length; i++)
+                {
+                    if (gDoors[i] == "C")
+                    {
+                        winningDoorIndex = i;
+                        break;
+                    }
+                }
+
+                for (int i = 0; i < gDoors.Length; i++)
+                {
+                    if (i == gameResult.FirstChoice - 1)
+                    {
+                        selectedDoorIndex = i;
+                        break;
+                    }
+                }
+
+                if (gameResultUpdateDto.IsSwitch)
+                {
+                    for (int i = 0; i < gDoors.Length; i++)
+                    {
+                        if (i != selectedDoorIndex && i != winningDoorIndex)
+                        {
+                            gameResult.SecondChoice = i + 1;
+                            finalDoorIndex = i;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    gameResult.SecondChoice = gameResult.FirstChoice;
+                    finalDoorIndex = selectedDoorIndex;
+                }
+
+                gameResult.IsWin = finalDoorIndex == winningDoorIndex;
+                _unitOfWork.SaveAsync();
+
+                string tmpMessage = string.Empty;
+                if (gameResult.IsWin) tmpMessage = "Congratulations..! You win the car.";
+                else tmpMessage = "You loose this time.";
+
+                return new ResponceDto<GameResultDto>()
+                {
+                    IsSuccess = true,
+                    Data = _mapper.Map<GameResultDto>(gameResult),
+                    Message = tmpMessage
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new ResponceDto<GameResultDto>()
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
                 };
             }
         }

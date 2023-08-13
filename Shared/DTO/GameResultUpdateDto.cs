@@ -5,6 +5,6 @@ namespace Shared.DTO
     {
         public int Id { get; set; }
         public int GameSetupId { get; set; }
-        public int SecondChoice { get; set; }
+        public bool IsSwitch { get; set; }
     }
 }
