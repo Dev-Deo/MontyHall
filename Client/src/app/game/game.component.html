@@ -3,12 +3,14 @@
     <div class="col-12">
       <!-- GAME REQUEST CARD -->
       <div class="card " style="background-color: white;" *ngIf="attempts <= 0">
-        <div class="card-header"><h4>Game Attempts</h4></div>
+        <div class="card-header">
+          <h4>Game Attempts</h4>
+        </div>
         <div class="card-body">
           <div class="row">
-            <div class="col-md-12"> 
-            <label>Home many times do you want to play</label>
-              <input type="text" class="form-control mt-2" id="game" name="game" placeholder="Attempts" #gameCount>
+            <div class="col-md-12">
+              <label>Home many times do you want to play</label>
+              <input type="number" class="form-control mt-2" id="game" name="game" placeholder="Attempts" #gameCount>
             </div>
           </div>
         </div>
@@ -18,7 +20,7 @@
       </div>
     </div>
   </div>
-  </div>
+</div>
 
 <div class="container text-center">
   <!-- GAME PALY CARD -->
@@ -50,7 +52,9 @@
 
   <!-- GAME RESULT CARD -->
   <div class="card" style="background-color: white;" *ngIf="gameSetup && isWin != undefined">
-    <div class="card-header"><h4>Game</h4></div>
+    <div class="card-header">
+      <h4>Game</h4>
+    </div>
     <div class="card-body">
       <div class="row">
         <div class="col-md-4 ali" [ngClass]="{'setBorderSelected': selectedDoor == 1}">

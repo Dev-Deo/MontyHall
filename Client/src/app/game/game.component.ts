@@ -34,7 +34,7 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {}
 
   onProceed(gameCount: HTMLInputElement) {
-    this.attempts =+ gameCount.value;
+    this.attempts = +gameCount.value;
     let currentUser = this.authService.getCurrentUser();
 
     let att: IGameRequestCreate = {
@@ -54,17 +54,23 @@ export class GameComponent implements OnInit {
     });
   }
 
-  goToNextGame() {
-    this.attemptNo++;
-    this.isWin = undefined;
-    this.selectedDoor = 0;
-    this.gameSetupId = 0;
-
+  resetPage() {
+    // this.attempts = 0;
+    // this.attemptNo = 0;
+    // this.gameRequestId = 0;
+    this.gameSetup = undefined;
+    this.gameResult = undefined;
     this.doorOneImg = 'DOOR1.png';
     this.doorTwoImg = 'DOOR2.png';
     this.doorThreeImg = 'DOOR3.png';
+    this.gameSetupId = 0;
+    this.selectedDoor = 0;
+    this.isWin = undefined;
+  }
 
-    this.gameSetup = undefined;
+  goToNextGame() {
+    this.resetPage();
+    this.attemptNo++;
 
     let gameSetupCreate: IGameSetupCreate = {
       gameRequestId: this.gameRequestId,

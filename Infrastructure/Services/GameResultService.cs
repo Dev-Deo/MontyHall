@@ -42,13 +42,10 @@ namespace Services
 
                 if (firstChoiceDoorIndex == winningDoorIndex)
                 {
-                    // Calculate the size of the new array (original size - 1)
                     int newSize = gDoors.Length - 1;
 
-                    // Create a new array with the calculated size
                     string[] newArray = new string[newSize];
 
-                    // Copy elements from the original array to the new array, skipping the specified index
                     for (int i = 0, j = 0; i < gDoors.Length; i++)
                     {
                         if (i != winningDoorIndex)
