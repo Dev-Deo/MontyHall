@@ -30,13 +30,13 @@ namespace Services
                 string[] gDoors = { gameSetup.FirstDoor, gameSetup.SecondDoor, gameSetup.ThirdDoor };
                 int winningDoorIndex = 0;
                 int doorToOpen = 0;
-                int selectedDoor = gameResultCreateDto.FirstChoise;
+                int selectedDoorIndex = gameResultCreateDto.FirstChoise;
 
                 if (gameSetup.FirstDoor == "C") winningDoorIndex = 1;
                 else if (gameSetup.FirstDoor == "C") winningDoorIndex = 2;
                 else winningDoorIndex = 3;
 
-                if (selectedDoor == winningDoorIndex)
+                if (selectedDoorIndex == winningDoorIndex)
                 {
                     //Remove winning door from array
                     GameSetupHelper.GetDoorNo(winningDoorIndex, gDoors, out gDoors);
@@ -45,23 +45,19 @@ namespace Services
                 }
                 else
                 {
-                    //for (int i = 0; i < gDoors.Length; i++)
-                    //{
-                    //    int tmpDoor = gDoors[i].ToUpper();
-                    //    if (tmpDoor != selectedDoor && tmpDoor != gWinnigDoor.ToUpper())
-                    //    {
-                    //        gOpenedDoor = tmpDoor;
-                    //        Console.WriteLine("Opened door: " + gOpenedDoor);
-                    //        break;
-                    //    }
-                    //}
+                    string tmpSelectedDoor = gDoors[selectedDoorIndex];
+                    string tmpWinningDoor = gDoors[winningDoorIndex];
+
+                    for (int i = 0; i < gDoors.Length; i++)
+                    {
+                        string tmpDoor = gDoors[i];
+                        if (tmpDoor != tmpSelectedDoor && tmpDoor != tmpWinningDoor)
+                        {
+                            doorToOpen = i;
+                            break;
+                        }
+                    }
                 }
-
-
-
-                //Remove user selected door from array
-                GameSetupHelper.GetDoorNo(gameResultCreateDto.FirstChoise, gDoors, out gDoors);
-
 
 
                 GameResult gameResult = new();
