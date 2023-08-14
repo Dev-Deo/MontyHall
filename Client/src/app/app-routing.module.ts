@@ -32,20 +32,19 @@ const routes: Routes = [
         component: HomeComponent,
       },
       {
-        path: 'user-manager',
-        loadChildren: () =>
-          import('./user-manager/user-manager.module').then(
-            (m) => m.UserManagerModule
-          ),
-      },
-      {
         path: 'game',
         loadChildren: () =>
           import('./game/game.module').then((m) => m.GameModule),
       },
     ],
   },
-
+  {
+    path: 'user-manager',
+    loadChildren: () =>
+      import('./user-manager/user-manager.module').then(
+        (m) => m.UserManagerModule
+      ),
+  },
   { path: '**', redirectTo: 'not-found', pathMatch: 'full' },
 ];
 

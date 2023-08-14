@@ -98,7 +98,6 @@ namespace Services
             }
         }
 
-
         public async Task<ResponceDto<GameResultDto>> GetGameResultsBySetupId(int setupId)
         {
             try

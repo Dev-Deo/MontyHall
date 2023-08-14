@@ -35,7 +35,7 @@ export class UserManagerCreateComponent implements OnInit {
       .createUser(this.applicationUserForm.value)
       .subscribe({
         next: (responce) => {
-          this.router.navigate(['/', 'user-manager']);
+          this.router.navigate(['/', 'home']);
         },
         error: (error) => {
           console.log(error);
