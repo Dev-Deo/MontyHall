@@ -36,14 +36,14 @@ const routes: Routes = [
         loadChildren: () =>
           import('./game/game.module').then((m) => m.GameModule),
       },
+      {
+        path: 'user-manager',
+        loadChildren: () =>
+          import('./user-manager/user-manager.module').then(
+            (m) => m.UserManagerModule
+          ),
+      },
     ],
-  },
-  {
-    path: 'user-manager',
-    loadChildren: () =>
-      import('./user-manager/user-manager.module').then(
-        (m) => m.UserManagerModule
-      ),
   },
   { path: '**', redirectTo: 'not-found', pathMatch: 'full' },
 ];
