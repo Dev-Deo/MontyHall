@@ -1,12 +1,11 @@
-<div class="container mt-5 px-5">
-    <div class="row pb-3">
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="row pb-3 w-50">
         <div class="col-md-12 stretch-card">
             <div class="card" style="background-color: white;">
-                <div class="card-header bg-light">
+                <div class="card-header bg-light text-center">
                     <h4>Register Now</h4>
                 </div>
-
-                <div class="card-body px-5">
+                <div class="card-body px-3">
                     <form class="theme-form" [formGroup]="applicationUserForm" (ngSubmit)="onSubmit()">
                         <div class="row">
                             <div class="col-md-12">
@@ -39,10 +38,10 @@
                             </div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-md-12 pull-right">
-                                <button class="btn btn-secondary pull-right" routerLink="/auth">Back</button>
+                            <div class="d-flex justify-content-center">
                                 <button type="submit" class="btn btn-primary me-1 pull-right"
                                     [disabled]="!applicationUserForm.valid">Register Now</button>
+                                <button class="btn btn-secondary pull-right" routerLink="/auth">Back To Login</button>
                             </div>
                         </div>
                     </form>
